@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_app/chat_message.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'chat_message.dart';
 
 class ChatScreen extends StatefulWidget {
+  String name;
+  ChatScreen(this.name);
   @override
-  State createState() => new ChatScreenState();
+  State createState() => new ChatScreenState(this.name);
 }
 
 class ChatScreenState extends State<ChatScreen> {
+  String _name;
+  ChatScreenState(this._name);
   final TextEditingController _textController = new TextEditingController();
   final List<ChatMessage> _messages = <ChatMessage>[];
   int i = 0;
@@ -29,6 +32,7 @@ class ChatScreenState extends State<ChatScreen> {
     if (text.length > 0) {
       _textController.clear();
       ChatMessage message = new ChatMessage(
+        name: _name,
         text: text,
       );
 
@@ -52,7 +56,7 @@ class ChatScreenState extends State<ChatScreen> {
             new Flexible(
               child: new TextField(
                 decoration:
-                    new InputDecoration.collapsed(hintText: "Send a message"),
+                new InputDecoration.collapsed(hintText: "Send a message"),
                 controller: _textController,
                 onSubmitted: (b) =>
                     _handleSubmitted(_textController.text, false),
